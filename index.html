@@ -35,8 +35,11 @@
       color: #fff;
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: 1.5rem;
+      padding: 2rem 0;
       background: #1a1a2e url('images/20220618_AA002A_Facebook.JPG') center/cover no-repeat fixed;
     }
 
@@ -46,6 +49,11 @@
       inset: 0;
       background: rgba(10, 15, 30, 0.65);
       z-index: 0;
+      transition: background 0.5s ease;
+    }
+
+    body.showcase::before {
+      background: rgba(10, 15, 30, 0.2);
     }
 
     .card {
@@ -62,6 +70,14 @@
       border-radius: 16px;
       box-shadow: 0 8px 40px rgba(0, 0, 0, 0.45), 0 0 80px rgba(201, 168, 76, 0.08);
       animation: fadeIn 0.8s ease-out;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    body.showcase .card {
+      opacity: 0.45;
+      transform: scale(0.97);
+      pointer-events: auto;
+      cursor: pointer;
     }
 
     @keyframes fadeIn {
@@ -156,30 +172,49 @@
       fill: currentColor;
     }
 
-    .lang-divider {
-      width: 100%;
-      height: 1px;
+    .lang-toggle {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .lang-toggle button {
+      padding: 0.4rem 1.2rem;
+      background: transparent;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.8rem;
+      letter-spacing: 0.03em;
+      opacity: 0.5;
+      transition: opacity 0.2s, background 0.2s;
+    }
+
+    .lang-toggle button:first-child {
+      border-radius: 6px 0 0 6px;
+    }
+
+    .lang-toggle button:last-child {
+      border-radius: 0 6px 6px 0;
+      border-left: none;
+    }
+
+    .lang-toggle button.active {
+      opacity: 1;
       background: rgba(255, 255, 255, 0.15);
-      margin: 2rem 0;
     }
 
-    .en-section {
-      opacity: 0.75;
+    .lang-toggle button:hover {
+      opacity: 0.85;
     }
 
-    .en-section h2 {
-      font-size: 1.35rem;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      line-height: 1.3;
+    .lang-section {
+      transition: opacity 0.3s ease;
     }
 
-    .en-section .subtitle {
-      margin-bottom: 1.25rem;
-    }
-
-    .en-section .message {
-      margin-bottom: 0;
+    .lang-section.hidden {
+      display: none;
     }
 
     .copyright {
@@ -190,10 +225,8 @@
 
     /* Temporary image cycler */
     .img-cycler {
-      position: fixed;
-      bottom: 1.5rem;
-      right: 1.5rem;
-      z-index: 10;
+      position: relative;
+      z-index: 1;
       display: flex;
       align-items: center;
       gap: 1rem;
@@ -245,13 +278,8 @@
         font-size: 1.7rem;
       }
 
-      .en-section h2 {
-        font-size: 1.15rem;
-      }
-
       .img-cycler {
-        bottom: 0.75rem;
-        right: 0.75rem;
+        gap: 0.5rem;
       }
 
       .img-cycler .img-label {
@@ -263,8 +291,13 @@
 <body>
   <main class="card">
 
+    <div class="lang-toggle">
+      <button id="btnIs" class="active" onclick="setLang('is')">Íslenska</button>
+      <button id="btnEn" onclick="setLang('en')">English</button>
+    </div>
+
     <!-- Icelandic (primary) -->
-    <section lang="is">
+    <section id="sectionIs" class="lang-section" lang="is">
       <h1>Berglög</h1>
       <div class="divider"></div>
       <p class="subtitle">Ingibjörg Halldórsdóttir, lögmaður</p>
@@ -276,11 +309,9 @@
       <a class="cta" href="mailto:ingibjorg@berglog.is">Hafðu samband</a>
     </section>
 
-    <div class="lang-divider"></div>
-
     <!-- English -->
-    <section class="en-section" lang="en">
-      <h2>Berglög</h2>
+    <section id="sectionEn" class="lang-section hidden" lang="en">
+      <h1>Berglög</h1>
       <div class="divider"></div>
       <p class="subtitle">Ingibjörg Halldórsdóttir, Attorney at Law</p>
       <p class="message">
@@ -337,9 +368,29 @@
       currentIndex = (currentIndex + dir + images.length) % images.length;
       document.body.style.backgroundImage = "url('" + images[currentIndex].src + "')";
       updateLabel();
+      document.body.classList.add('showcase');
     }
 
     updateLabel();
+
+    // Exit showcase mode
+    document.querySelector('.card').addEventListener('click', function(e) {
+      if (document.body.classList.contains('showcase')) {
+        e.preventDefault();
+        document.body.classList.remove('showcase');
+      }
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') document.body.classList.remove('showcase');
+    });
+
+    function setLang(lang) {
+      document.getElementById('sectionIs').classList.toggle('hidden', lang !== 'is');
+      document.getElementById('sectionEn').classList.toggle('hidden', lang !== 'en');
+      document.getElementById('btnIs').classList.toggle('active', lang === 'is');
+      document.getElementById('btnEn').classList.toggle('active', lang === 'en');
+      document.documentElement.lang = lang;
+    }
   </script>
 </body>
 </html>
