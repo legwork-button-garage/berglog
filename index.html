@@ -40,7 +40,7 @@
       justify-content: center;
       gap: 1.5rem;
       padding: 2rem 0;
-      background: #1a1a2e url('images/20220618_AA002A_Facebook.JPG') center/cover no-repeat fixed;
+      background: #1a1a2e url('images/IMG_20201008_193856_348.jpg') center/cover no-repeat fixed;
     }
 
     body::before {
@@ -407,18 +407,17 @@
 
   <script>
     const images = [
+      { src: 'images/IMG_20201008_193856_348.jpg',       title: 'Þingvellir, október 2020' },
       { src: 'images/20220618_AA002A_Facebook.JPG',      title: 'Þórsmörk, júní 2022' },
       { src: 'images/20220809_Photo07_7_Facebook.JPG',   title: 'Skaftafell, ágúst 2022' },
       { src: 'images/20220809_Photo12_12_Facebook.JPG',  title: 'Skaftafell, ágúst 2022' },
       { src: 'images/20220809_Photo16_16_Facebook.JPG',  title: 'Skaftafell, ágúst 2022' },
       { src: 'images/20220809_Photo23_23_Facebook.JPG',  title: 'Skaftafell, ágúst 2022' },
       { src: 'images/20220809_Photo24_24_Facebook.JPG',  title: 'Skaftafell, ágúst 2022' },
-      { src: 'images/20220809_Photo27_27_Facebook.JPG',  title: 'Skaftafell, ágúst 2022' },
-      { src: 'images/IMG_20201008_193856_348.jpg',       title: 'Þingvellir, október 2020' }
+      { src: 'images/20220809_Photo27_27_Facebook.JPG',  title: 'Skaftafell, ágúst 2022' }
     ];
     const photographer = 'Jón Halldór Unnarsson';
-    let currentIndex = Math.floor(Math.random() * images.length);
-    document.body.style.backgroundImage = "url('" + images[currentIndex].src + "')";
+    let currentIndex = 0;
     const label = document.getElementById('imgLabel');
 
     function updateLabel() {
