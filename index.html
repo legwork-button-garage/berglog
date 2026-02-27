@@ -59,6 +59,18 @@
 
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
     .skip-link {
       position: absolute;
       top: -100%;
@@ -410,15 +422,15 @@
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
-  <main class="card" id="main-content" tabindex="-1">
+  <main class="card" id="main-content">
 
-    <nav class="lang-toggle" aria-label="Language">
-      <button type="button" id="btnIs" class="active" aria-pressed="true">Íslenska</button>
-      <button type="button" id="btnEn" aria-pressed="false">English</button>
+    <nav class="lang-toggle" role="toolbar" aria-label="Language">
+      <button type="button" id="btnIs" class="active" aria-pressed="true" tabindex="0">Íslenska</button>
+      <button type="button" id="btnEn" aria-pressed="false" tabindex="-1">English</button>
     </nav>
 
     <!-- Icelandic (primary) -->
-    <section id="sectionIs" class="lang-section" lang="is">
+    <section id="sectionIs" class="lang-section">
       <h1>Berglög</h1>
       <hr class="divider" aria-hidden="true">
       <p class="subtitle">Ingibjörg Halldórsdóttir, lögmaður</p>
@@ -454,7 +466,7 @@
   </main>
 
   <!-- Temporary: cycle background images -->
-  <div class="img-cycler">
+  <div class="img-cycler" aria-label="Background image">
     <span class="img-label" id="imgLabel" aria-live="polite"></span>
     <button type="button" aria-label="Previous image">&#9664;</button>
     <button type="button" aria-label="Next image">&#9654;</button>
@@ -477,7 +489,7 @@
     const label = document.getElementById('imgLabel');
 
     function updateLabel() {
-      label.innerHTML = `${currentIndex + 1}/${images.length} — ${images[currentIndex].title} · 📷 <a href="https://www.jonhalldor.com/" target="_blank" rel="noopener noreferrer">${photographer}</a>`;
+      label.innerHTML = `${currentIndex + 1}/${images.length} — ${images[currentIndex].title} · <span aria-hidden="true">📷</span> <span class="sr-only">Photo by </span><a href="https://www.jonhalldor.com/" target="_blank" rel="noopener noreferrer">${photographer}</a>`;
     }
 
     function isPortraitMobile() {
@@ -492,7 +504,7 @@
       document.body.classList.add('showcase');
       clearTimeout(showcaseTimer);
       showcaseTimer = setTimeout(() => document.body.classList.remove('showcase'), 3000);
-      document.getElementById('main-content').focus();
+
     }
 
     function setLang(lang) {
@@ -508,10 +520,30 @@
     }
 
     // Event listeners
-    document.getElementById('btnIs').addEventListener('click', () => setLang('is'));
-    document.getElementById('btnEn').addEventListener('click', () => setLang('en'));
-    document.querySelector('.img-cycler button:first-of-type').addEventListener('click', () => cycleImage(-1));
-    document.querySelector('.img-cycler button:last-of-type').addEventListener('click', () => cycleImage(1));
+    const btnIs = document.getElementById('btnIs');
+    const btnEn = document.getElementById('btnEn');
+    btnIs.addEventListener('click', () => setLang('is'));
+    btnEn.addEventListener('click', () => setLang('en'));
+
+    // Roving tabindex for language toggle
+    document.querySelector('.lang-toggle').addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        e.stopPropagation();
+        const target = document.activeElement === btnIs ? btnEn : btnIs;
+        target.tabIndex = 0;
+        document.activeElement.tabIndex = -1;
+        target.focus();
+        target.click();
+      }
+    });
+
+    const prevBtn = document.querySelector('.img-cycler button:first-of-type');
+    const nextBtn = document.querySelector('.img-cycler button:last-of-type');
+    prevBtn.addEventListener('click', () => cycleImage(-1));
+    nextBtn.addEventListener('click', () => cycleImage(1));
+
+
     document.querySelector('.card').addEventListener('click', (e) => {
       if (document.body.classList.contains('showcase')) {
         e.preventDefault();
@@ -519,9 +551,12 @@
       }
     });
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') document.body.classList.remove('showcase');
-      if (e.key === 'ArrowLeft') cycleImage(-1);
-      if (e.key === 'ArrowRight') cycleImage(1);
+      if (document.body.classList.contains('showcase') &&
+          (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ')) {
+        e.preventDefault();
+        document.body.classList.remove('showcase');
+        clearTimeout(showcaseTimer);
+      }
     });
 
     updateLabel();
