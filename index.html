@@ -473,6 +473,7 @@
     ];
     const photographer = 'Jón Halldór Unnarsson';
     let currentIndex = 0;
+    let showcaseTimer = null;
     const label = document.getElementById('imgLabel');
 
     function updateLabel() {
@@ -489,6 +490,8 @@
       document.body.style.backgroundImage = `url('${images[currentIndex].src}')`;
       updateLabel();
       document.body.classList.add('showcase');
+      clearTimeout(showcaseTimer);
+      showcaseTimer = setTimeout(() => document.body.classList.remove('showcase'), 3000);
       document.getElementById('main-content').focus();
     }
 
