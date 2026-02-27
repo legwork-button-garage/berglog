@@ -422,16 +422,16 @@
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
-  <main class="card" id="main-content">
+  <main class="card">
 
-    <nav class="lang-toggle" role="toolbar" aria-label="Language">
-      <button type="button" id="btnIs" class="active" aria-pressed="true" tabindex="0">Íslenska</button>
-      <button type="button" id="btnEn" aria-pressed="false" tabindex="-1">English</button>
+    <nav class="lang-toggle" aria-label="Language">
+      <button type="button" id="btnIs" class="active" aria-pressed="true">Íslenska</button>
+      <button type="button" id="btnEn" aria-pressed="false">English</button>
     </nav>
 
     <!-- Icelandic (primary) -->
     <section id="sectionIs" class="lang-section">
-      <h1>Berglög</h1>
+      <h1 id="main-content" tabindex="-1">Berglög</h1>
       <hr class="divider" aria-hidden="true">
       <p class="subtitle">Ingibjörg Halldórsdóttir, lögmaður</p>
       <p class="message">
@@ -525,18 +525,6 @@
     btnIs.addEventListener('click', () => setLang('is'));
     btnEn.addEventListener('click', () => setLang('en'));
 
-    // Roving tabindex for language toggle
-    document.querySelector('.lang-toggle').addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-        e.preventDefault();
-        e.stopPropagation();
-        const target = document.activeElement === btnIs ? btnEn : btnIs;
-        target.tabIndex = 0;
-        document.activeElement.tabIndex = -1;
-        target.focus();
-        target.click();
-      }
-    });
 
     const prevBtn = document.querySelector('.img-cycler button:first-of-type');
     const nextBtn = document.querySelector('.img-cycler button:last-of-type');
