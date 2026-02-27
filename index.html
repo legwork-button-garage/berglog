@@ -430,7 +430,7 @@
     </nav>
 
     <!-- Icelandic (primary) -->
-    <section id="sectionIs" class="lang-section">
+    <section id="sectionIs" class="lang-section" aria-hidden="false">
       <h1 id="main-content" tabindex="-1">Berglög</h1>
       <hr class="divider" aria-hidden="true">
       <p class="subtitle">Ingibjörg Halldórsdóttir, lögmaður</p>
@@ -466,7 +466,7 @@
   </main>
 
   <!-- Temporary: cycle background images -->
-  <div class="img-cycler" aria-label="Background image">
+  <div class="img-cycler" role="group" aria-label="Background image">
     <span class="img-label" id="imgLabel" aria-live="polite"></span>
     <button type="button" aria-label="Previous image">&#9664;</button>
     <button type="button" aria-label="Next image">&#9654;</button>
@@ -489,7 +489,7 @@
     const label = document.getElementById('imgLabel');
 
     function updateLabel() {
-      label.innerHTML = `${currentIndex + 1}/${images.length} — ${images[currentIndex].title} · <span aria-hidden="true">📷</span> <span class="sr-only">Photo by </span><a href="https://www.jonhalldor.com/" target="_blank" rel="noopener noreferrer">${photographer}</a>`;
+      label.innerHTML = `${currentIndex + 1}/${images.length} — ${images[currentIndex].title} · <span aria-hidden="true">📷</span> <span class="sr-only">Photo by </span><a href="https://www.jonhalldor.com/About" target="_blank" rel="noopener noreferrer">${photographer}</a>`;
     }
 
     function isPortraitMobile() {
@@ -504,7 +504,6 @@
       document.body.classList.add('showcase');
       clearTimeout(showcaseTimer);
       showcaseTimer = setTimeout(() => document.body.classList.remove('showcase'), 3000);
-
     }
 
     function setLang(lang) {
@@ -525,22 +524,22 @@
     btnIs.addEventListener('click', () => setLang('is'));
     btnEn.addEventListener('click', () => setLang('en'));
 
-
     const prevBtn = document.querySelector('.img-cycler button:first-of-type');
     const nextBtn = document.querySelector('.img-cycler button:last-of-type');
     prevBtn.addEventListener('click', () => cycleImage(-1));
     nextBtn.addEventListener('click', () => cycleImage(1));
 
-
     document.querySelector('.card').addEventListener('click', (e) => {
       if (document.body.classList.contains('showcase')) {
         e.preventDefault();
         document.body.classList.remove('showcase');
+        clearTimeout(showcaseTimer);
       }
     });
     document.addEventListener('keydown', (e) => {
-      if (document.body.classList.contains('showcase') &&
-          (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ')) {
+      if (!document.body.classList.contains('showcase')) return;
+      const onCycler = e.target.closest('.img-cycler');
+      if (e.key === 'Escape' || (!onCycler && (e.key === 'Enter' || e.key === ' '))) {
         e.preventDefault();
         document.body.classList.remove('showcase');
         clearTimeout(showcaseTimer);
