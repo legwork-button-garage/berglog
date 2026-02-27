@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
   <title>Berglög lögmannsstofa</title>
   <meta name="description" content="Berglög lögmannsstofa — Ingibjörg Halldórsdóttir, lögmaður. Vefsíðan er í endurnýjun. Hafðu samband í gegnum tölvupóst.">
   <meta property="og:title" content="Berglög lögmannsstofa">
@@ -10,8 +11,11 @@
   <meta property="og:type" content="website">
   <meta property="og:locale" content="is_IS">
   <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:url" content="https://berglog.is">
+  <meta property="og:image" content="https://legwork-button-garage.github.io/berglog/images/IMG_20201008_193856_348.jpg">
   <link rel="canonical" href="https://berglog.is">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚖</text></svg>">
+  <link rel="preload" as="image" href="images/IMG_20201008_193856_348.jpg">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -28,11 +32,50 @@
   }
   </script>
   <style>
+    :root {
+      --color-gold: #c9a84c;
+      --color-gold-hover: #dbbe6a;
+      --color-dark: #1a1a2e;
+      --color-overlay: rgba(10, 15, 30, 0.65);
+      --color-glass: rgba(255, 255, 255, 0.13);
+      --color-glass-border: rgba(255, 255, 255, 0.25);
+      --color-glass-hover: rgba(255, 255, 255, 0.15);
+      --color-text: #fff;
+    }
+
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-gold);
+      color: var(--color-dark);
+      padding: 0.5rem 1.5rem;
+      border-radius: 0 0 6px 6px;
+      z-index: 100;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .skip-link:focus {
+      top: 0;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--color-gold);
+      outline-offset: 2px;
+    }
+
+    .cta:focus-visible {
+      outline-offset: 3px;
+    }
 
     body {
       font-family: 'Georgia', 'Times New Roman', serif;
-      color: #fff;
+      color: var(--color-text);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -40,14 +83,14 @@
       justify-content: center;
       gap: 1.5rem;
       padding: 2rem 0;
-      background: #1a1a2e url('images/IMG_20201008_193856_348.jpg') center/cover no-repeat fixed;
+      background: var(--color-dark) url('images/IMG_20201008_193856_348.jpg') center/cover no-repeat fixed;
     }
 
     body::before {
       content: '';
       position: fixed;
       inset: 0;
-      background: rgba(10, 15, 30, 0.65);
+      background: var(--color-overlay);
       z-index: 0;
       transition: background 0.5s ease;
     }
@@ -63,12 +106,12 @@
       width: 92%;
       text-align: center;
       padding: 3.5rem 3rem;
-      background: rgba(255, 255, 255, 0.13);
+      background: var(--color-glass);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      border: 1px solid var(--color-glass-border);
       border-radius: 16px;
-      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.45), 0 0 80px rgba(201, 168, 76, 0.08);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.45), 0 0 80px color-mix(in srgb, var(--color-gold) 8%, transparent);
       animation: fadeIn 0.8s ease-out;
       transition: opacity 0.5s ease, transform 0.5s ease;
     }
@@ -76,7 +119,6 @@
     body.showcase .card {
       opacity: 0.45;
       transform: scale(0.97);
-      pointer-events: auto;
       cursor: pointer;
     }
 
@@ -96,7 +138,8 @@
     .divider {
       width: 60px;
       height: 2.5px;
-      background: linear-gradient(90deg, transparent, #c9a84c, transparent);
+      border: none;
+      background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
       margin: 1.6rem auto;
     }
 
@@ -117,8 +160,8 @@
     .cta {
       display: inline-block;
       padding: 0.8rem 2rem;
-      background: #c9a84c;
-      color: #1a1a2e;
+      background: var(--color-gold);
+      color: var(--color-dark);
       text-decoration: none;
       font-weight: 700;
       font-size: 0.95rem;
@@ -127,7 +170,7 @@
       transition: background 0.2s;
     }
 
-    .cta:hover { background: #dbbe6a; }
+    .cta:hover { background: var(--color-gold-hover); }
 
     .info {
       margin-top: 1.75rem;
@@ -136,15 +179,17 @@
       line-height: 1.6;
     }
 
-    .info a {
-      color: #fff;
+    .info a,
+    .img-cycler .img-label a {
+      color: var(--color-text);
       text-decoration: none;
       border-bottom: 1px solid rgba(255, 255, 255, 0.3);
       transition: border-color 0.2s;
     }
 
-    .info a:hover {
-      border-color: #c9a84c;
+    .info a:hover,
+    .img-cycler .img-label a:hover {
+      border-color: var(--color-gold);
     }
 
     .social {
@@ -155,15 +200,15 @@
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
-      color: #fff;
+      color: var(--color-text);
       text-decoration: none;
       font-size: 0.8rem;
-      opacity: 0.55;
+      opacity: 0.65;
       transition: opacity 0.2s;
     }
 
     .social a:hover {
-      opacity: 0.85;
+      opacity: 0.9;
     }
 
     .social svg {
@@ -181,13 +226,13 @@
     .lang-toggle button {
       padding: 0.4rem 1.2rem;
       background: transparent;
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: var(--color-text);
+      border: 1px solid var(--color-glass-border);
       cursor: pointer;
       font-family: inherit;
       font-size: 0.8rem;
       letter-spacing: 0.03em;
-      opacity: 0.5;
+      opacity: 0.65;
       transition: opacity 0.2s, background 0.2s;
     }
 
@@ -202,15 +247,11 @@
 
     .lang-toggle button.active {
       opacity: 1;
-      background: rgba(255, 255, 255, 0.15);
+      background: var(--color-glass-hover);
     }
 
     .lang-toggle button:hover {
-      opacity: 0.85;
-    }
-
-    .lang-section {
-      transition: opacity 0.3s ease;
+      opacity: 0.9;
     }
 
     .lang-section.hidden {
@@ -218,9 +259,10 @@
     }
 
     .copyright {
+      display: block;
       margin-top: 1.25rem;
       font-size: 0.75rem;
-      opacity: 0.45;
+      opacity: 0.6;
     }
 
     /* Temporary image cycler */
@@ -234,11 +276,11 @@
 
     .img-cycler button {
       padding: 0.5rem 1rem;
-      background: rgba(255, 255, 255, 0.15);
+      background: var(--color-glass-hover);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: var(--color-text);
+      border: 1px solid var(--color-glass-border);
       border-radius: 6px;
       cursor: pointer;
       font-size: 0.8rem;
@@ -247,26 +289,18 @@
     }
 
     .img-cycler button:hover {
-      background: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.28);
     }
 
     .img-cycler .img-label {
       font-size: 0.7rem;
-      opacity: 0.6;
+      opacity: 0.7;
       white-space: nowrap;
     }
 
     .img-cycler .img-label a {
-      color: #fff;
-      text-decoration: none;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-      transition: border-color 0.2s;
       padding: 0.3rem 0.25rem;
       margin: -0.3rem -0.25rem;
-    }
-
-    .img-cycler .img-label a:hover {
-      border-color: #c9a84c;
     }
 
     @media (max-width: 480px) {
@@ -274,6 +308,7 @@
         padding: 1rem 0;
         gap: 0.75rem;
         min-height: 100svh;
+        background-attachment: scroll;
       }
 
       .card {
@@ -350,20 +385,28 @@
         opacity: 1;
       }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
   </style>
 </head>
 <body>
-  <main class="card">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <main class="card" id="main-content" tabindex="-1">
 
-    <div class="lang-toggle">
-      <button id="btnIs" class="active" onclick="setLang('is')">Íslenska</button>
-      <button id="btnEn" onclick="setLang('en')">English</button>
-    </div>
+    <nav class="lang-toggle" aria-label="Language">
+      <button type="button" id="btnIs" class="active" aria-pressed="true">Íslenska</button>
+      <button type="button" id="btnEn" aria-pressed="false">English</button>
+    </nav>
 
     <!-- Icelandic (primary) -->
     <section id="sectionIs" class="lang-section" lang="is">
       <h1>Berglög</h1>
-      <div class="divider"></div>
+      <hr class="divider" aria-hidden="true">
       <p class="subtitle">Ingibjörg Halldórsdóttir, lögmaður</p>
       <p class="message">
         Vefsíðan er í endurnýjun og verður opnuð á næstunni.<br>
@@ -374,9 +417,9 @@
     </section>
 
     <!-- English -->
-    <section id="sectionEn" class="lang-section hidden" lang="en">
+    <section id="sectionEn" class="lang-section hidden" lang="en" aria-hidden="true">
       <h1>Berglög</h1>
-      <div class="divider"></div>
+      <hr class="divider" aria-hidden="true">
       <p class="subtitle">Ingibjörg Halldórsdóttir, Attorney at Law</p>
       <p class="message">
         Our website is currently being updated and will launch shortly.<br>
@@ -391,18 +434,18 @@
     </p>
     <p class="social">
       <a href="https://www.linkedin.com/in/ingibj%C3%B6rg-halld%C3%B3rsd%C3%B3ttir-ba788611a/" target="_blank" rel="noopener noreferrer">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
         LinkedIn
       </a>
     </p>
-    <p class="copyright">&copy; 2026 Berglög lögmannsstofa</p>
+    <small class="copyright">&copy; 2026 Berglög lögmannsstofa</small>
   </main>
 
   <!-- Temporary: cycle background images -->
   <div class="img-cycler">
-    <span class="img-label" id="imgLabel"></span>
-    <button onclick="cycleImage(-1)" aria-label="Previous image">&#9664;</button>
-    <button onclick="cycleImage(1)" aria-label="Next image">&#9654;</button>
+    <span class="img-label" id="imgLabel" aria-live="polite"></span>
+    <button type="button" aria-label="Previous image">&#9664;</button>
+    <button type="button" aria-label="Next image">&#9654;</button>
   </div>
 
   <script>
@@ -421,10 +464,7 @@
     const label = document.getElementById('imgLabel');
 
     function updateLabel() {
-      label.innerHTML = (currentIndex + 1) + '/' + images.length
-        + ' — ' + images[currentIndex].title
-        + ' · 📷 <a href="https://www.jonhalldor.com/" target="_blank" rel="noopener noreferrer">'
-        + photographer + '</a>';
+      label.innerHTML = `${currentIndex + 1}/${images.length} — ${images[currentIndex].title} · 📷 <a href="https://www.jonhalldor.com/" target="_blank" rel="noopener noreferrer">${photographer}</a>`;
     }
 
     function isPortraitMobile() {
@@ -434,31 +474,42 @@
     function cycleImage(dir) {
       if (isPortraitMobile()) return;
       currentIndex = (currentIndex + dir + images.length) % images.length;
-      document.body.style.backgroundImage = "url('" + images[currentIndex].src + "')";
+      document.body.style.backgroundImage = `url('${images[currentIndex].src}')`;
       updateLabel();
       document.body.classList.add('showcase');
+      document.getElementById('main-content').focus();
     }
-
-    updateLabel();
-
-    // Exit showcase mode
-    document.querySelector('.card').addEventListener('click', function(e) {
-      if (document.body.classList.contains('showcase')) {
-        e.preventDefault();
-        document.body.classList.remove('showcase');
-      }
-    });
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') document.body.classList.remove('showcase');
-    });
 
     function setLang(lang) {
       document.getElementById('sectionIs').classList.toggle('hidden', lang !== 'is');
       document.getElementById('sectionEn').classList.toggle('hidden', lang !== 'en');
       document.getElementById('btnIs').classList.toggle('active', lang === 'is');
       document.getElementById('btnEn').classList.toggle('active', lang === 'en');
+      document.getElementById('btnIs').setAttribute('aria-pressed', lang === 'is');
+      document.getElementById('btnEn').setAttribute('aria-pressed', lang === 'en');
+      document.getElementById('sectionIs').setAttribute('aria-hidden', lang !== 'is');
+      document.getElementById('sectionEn').setAttribute('aria-hidden', lang !== 'en');
       document.documentElement.lang = lang;
     }
+
+    // Event listeners
+    document.getElementById('btnIs').addEventListener('click', () => setLang('is'));
+    document.getElementById('btnEn').addEventListener('click', () => setLang('en'));
+    document.querySelector('.img-cycler button:first-of-type').addEventListener('click', () => cycleImage(-1));
+    document.querySelector('.img-cycler button:last-of-type').addEventListener('click', () => cycleImage(1));
+    document.querySelector('.card').addEventListener('click', (e) => {
+      if (document.body.classList.contains('showcase')) {
+        e.preventDefault();
+        document.body.classList.remove('showcase');
+      }
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') document.body.classList.remove('showcase');
+      if (e.key === 'ArrowLeft') cycleImage(-1);
+      if (e.key === 'ArrowRight') cycleImage(1);
+    });
+
+    updateLabel();
   </script>
 </body>
 </html>
